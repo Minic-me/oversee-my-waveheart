@@ -18,7 +18,7 @@ namespace UnityStandardAssets.CrossPlatformInput
         protected List<string> m_AlwaysUseVirtual = new List<string>();
             // list of the axis and button names that have been flagged to always use a virtual axis or button
         
-             
+
         public bool AxisExists(string name)
         {
             return m_VirtualAxes.ContainsKey(name);
