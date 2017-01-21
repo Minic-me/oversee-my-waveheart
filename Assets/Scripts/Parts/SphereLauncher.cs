@@ -15,9 +15,13 @@ public class SphereLauncher : MonoBehaviour {
 
     private bool _hasDrawn = false;
 
+    public bool soundPlayer = false;
+
+    private AudioSource _audioSource;
+
 	// Use this for initialization
 	void Start () {
-		
+        _audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -29,6 +33,11 @@ public class SphereLauncher : MonoBehaviour {
     {
         if ( sphereZone != null && !_hasDrawn)
         {
+            if(_audioSource != null && soundPlayer)
+            {
+                _audioSource.Play();
+            }
+
             GameObject sphere = Instantiate( sphereZone );
             sphere.transform.position = transform.position;
             sphere.transform.parent = transform;
@@ -40,6 +49,12 @@ public class SphereLauncher : MonoBehaviour {
                 "oncomplete", "Destroy",
                 "oncompletetarget", sphere
             ));
+
+            iTween.ColorTo( sphere, iTween.Hash(
+                "a", 0,
+                "time", scaleTime,
+                "easetype", scaleEaseType
+            ) );
 
             _hasDrawn = true;
         }
