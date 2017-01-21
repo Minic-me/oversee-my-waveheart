@@ -23,8 +23,6 @@ public class PlayerLookTrigger : MonoBehaviour {
             {
                 sphereLauncher.Trigger();
             }
-            Debug.Log( hit.transform.name );
-            Debug.DrawLine( transform.position, hit.transform.position, Color.red );
         }
     }
 }
