@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
         EventManager.Listen("level_complete", LevelComplete);
         EventManager.Listen("play_menu_button", Play);
         EventManager.Listen("back_to_menu", BackToMenu);
+
+        SceneManager.LoadScene("Menu");
     }
 
     void OnDisable()
@@ -28,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private void Play(object[] args)
     {
-        StartCoroutine(FadeOutOnQuit(Color.white, ""));
+        StartCoroutine(FadeOutOnQuit(Color.white, "Level" + (int)args[0]));
     }
 
     private void BackToMenu(object[] args)
@@ -38,6 +40,11 @@ public class GameManager : MonoBehaviour
 
     private void LevelComplete(object[] args)
     {
+        if((int)args[0] == 3)
+        {
+            PlayerPrefs.SetInt("game_ended", 1);
+            PlayerPrefs.Save();
+        }
         string key = "" + (int)args[0];
         PlayerPrefs.SetInt(key, 1);
         PlayerPrefs.Save();
@@ -49,6 +56,10 @@ public class GameManager : MonoBehaviour
         if (fadePanel == null)
         {
             fadePanel = FindObjectOfType<CameraFade>();
+            if(fadePanel == null)
+            {
+                Debug.LogError("No FadePanel in Scene");
+            }
             fadeImage = fadePanel.gameObject.GetComponent<Image>();
         }
         float timer = 0;
@@ -67,6 +78,10 @@ public class GameManager : MonoBehaviour
         if(fadePanel == null)
         {
             fadePanel = FindObjectOfType<CameraFade>();
+            if (fadePanel == null)
+            {
+                Debug.LogError("No FadePanel in Scene");
+            }
             fadeImage = fadePanel.gameObject.GetComponent<Image>();
         }
         float timer = 0;
@@ -78,3 +93,4 @@ public class GameManager : MonoBehaviour
         }
     }
 }
+    
