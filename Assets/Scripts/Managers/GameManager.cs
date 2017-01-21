@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
 
     private void Play(object[] args)
     {
-        StartCoroutine(FadeOutOnQuit(Color.white, "Level" + (int)args[0]));
+        StartCoroutine(FadeOutOnQuit(Color.white, "level_" + (int)args[0]));
     }
 
     private void BackToMenu(object[] args)

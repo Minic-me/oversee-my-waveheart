@@ -41,6 +41,16 @@ public class MenuManager : MonoBehaviour
             EventManager.Send("play_menu_button", 1);
         }
     }
+    public void CreditsButtonStartMenu()
+    {
+        HideAll();
+        credits.SetActive(true);
+    }
+    public void BackButtonCreditMenu()
+    {
+        HideAll();
+        startMenu.SetActive(true);
+    }
     public void QuitButtonStartMenu()
     {
         Application.Quit();
