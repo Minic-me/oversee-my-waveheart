@@ -13,7 +13,12 @@ public class Enigme : MonoBehaviour {
 	void Start () {
         _actualValidated = new List<Code>();
         _lines = new List<LineRenderer>();
-        Event.Listen("code_activated", CodeValidate);
+        EventManager.Listen("code_activated", CodeValidate);
+    }
+
+    void OnDisable()
+    {
+        EventManager.Remove("code_activated", CodeValidate);
     }
 
     // Update is called once per frame
@@ -34,7 +39,6 @@ public class Enigme : MonoBehaviour {
         Code code = (Code)args[0];
         if (code == Code[_actualValidated.Count])
         {
-            Debug.Log("Ajouté");
             _actualValidated.Add(code);
             code.Activate();
 
@@ -47,8 +51,7 @@ public class Enigme : MonoBehaviour {
             }
         }
         else
-        {
-            Debug.Log("Echec");
+        {/*
             _actualValidated.ForEach(delegate(Code theCode)
             {
                 theCode.Disactivate();
@@ -59,7 +62,7 @@ public class Enigme : MonoBehaviour {
                 line.SetPosition(1, new Vector3(0,0,0));
             });
             _lines.Clear();
-            _actualValidated.Clear();
+            _actualValidated.Clear();*/
         }
         if(_actualValidated.Count == Code.Count)
         {

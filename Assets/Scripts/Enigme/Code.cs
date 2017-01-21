@@ -21,7 +21,7 @@ public class Code : MonoBehaviour {
         {
             if (!_isActivate)
             {
-                Event.Send("code_activated", this);
+                EventManager.Send("code_activated", this);
             }
             _isLooked = true;
         }
