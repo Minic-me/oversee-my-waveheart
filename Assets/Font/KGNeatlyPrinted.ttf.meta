@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 9cd311d25bb39a441b06283f610b6704
+timeCreated: 1485012226
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: KG Neatly Printed
+  fontNames:
+  - KG Neatly Printed
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
