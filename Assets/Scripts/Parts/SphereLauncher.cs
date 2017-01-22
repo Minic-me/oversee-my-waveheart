@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Tobii.EyeTracking;
 using UnityEngine;
 
+[RequireComponent(typeof(GazeAware))]
 public class SphereLauncher : MonoBehaviour {
 
     public GameObject sphereZone;
@@ -21,14 +23,20 @@ public class SphereLauncher : MonoBehaviour {
 
     public float sphereForce = 10f;
 
+    private GazeAware _gaze;
+
 	// Use this for initialization
 	void Start () {
         _audioSource = GetComponent<AudioSource>();
+        _gaze = GetComponent<GazeAware>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(_gaze.HasGazeFocus)
+        {
+            Trigger();
+        }
 	}
 
     public void Trigger()
