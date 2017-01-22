@@ -6,6 +6,7 @@ using Tobii.EyeTracking;
 public class PlayerLookTrigger : MonoBehaviour {
 
     private Camera _camera;
+    private bool _tobiiRunning;
 
 	// Use this for initialization
 	void Start () {
@@ -15,16 +16,22 @@ public class PlayerLookTrigger : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        Ray ray = _camera.ViewportPointToRay( new Vector3( 0.5f, 0.5f, 0 ) );
-        RaycastHit hit;
-
-        if ( Physics.Raycast( ray, out hit ) )
+        if(EyeTrackingHost.GetInstance().EyeTrackingDeviceStatus != DeviceStatus.Tracking)
         {
-            SphereLauncher sphereLauncher = hit.collider.gameObject.GetComponent<SphereLauncher>();
-            if ( sphereLauncher != null)
+            Ray ray = _camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
             {
-                sphereLauncher.Trigger();
+                SphereLauncher sphereLauncher = hit.collider.gameObject.GetComponent<SphereLauncher>();
+                if (sphereLauncher != null)
+                {
+                    sphereLauncher.Trigger();
+                }
             }
         }
+
+
+
     }
 }
