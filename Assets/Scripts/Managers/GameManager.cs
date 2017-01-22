@@ -10,13 +10,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float fadeDuration;
     private CameraFade fadePanel;
     private Image fadeImage;
+    private string _currentLevel;
 
 	void Start ()
     {
-        DontDestroyOnLoad(this.gameObject);
+        _currentLevel = "";
+        DontDestroyOnLoad(this.gameObject); 
         EventManager.Listen("level_complete", LevelComplete);
+        EventManager.Listen("in_tampon", RestartScene);
         EventManager.Listen("play_menu_button", Play);
         EventManager.Listen("back_to_menu", BackToMenu);
+        EventManager.Listen("restart_current", RestartLevel);
 
         SceneManager.LoadScene("Menu");
     }
@@ -24,23 +28,42 @@ public class GameManager : MonoBehaviour
     void OnDisable()
     {
         EventManager.Remove("level_complete", LevelComplete);
+        EventManager.Remove("in_tampon", RestartScene);
         EventManager.Remove("play_menu_button", Play);
         EventManager.Remove("back_to_menu", BackToMenu);
+        EventManager.Remove("restart_current", RestartLevel);
+    }
+
+    private void RestartLevel(object[] args)
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeOutOnQuit(Color.black, "TamponRestart"));
+    }
+
+    private void RestartScene(object[] args)
+    {
+        Debug.Log("restart");   
+        StopAllCoroutines();
+        StartCoroutine(FadeOutOnQuit(Color.black, _currentLevel));
     }
 
     private void Play(object[] args)
     {
-        StartCoroutine(FadeOutOnQuit(Color.white, "level_" + (int)args[0]));
+        _currentLevel = (string)args[0];
+        StopAllCoroutines();
+        StartCoroutine(FadeOutOnQuit(Color.white, (string)args[0]));
     }
 
     private void BackToMenu(object[] args)
     {
-
+        StopAllCoroutines();
+        StartCoroutine(FadeOutOnQuit(Color.black, "Menu"));
     }
 
     private void LevelComplete(object[] args)
     {
-        if((int)args[0] == 3)
+        _currentLevel = "" + (int)args[0];
+        if ((int)args[0] == 3)
         {
             PlayerPrefs.SetInt("game_ended", 1);
             PlayerPrefs.Save();
@@ -70,6 +93,7 @@ public class GameManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         SceneManager.LoadScene(sceneOnComplete);
+        yield return new WaitForEndOfFrame();
         StartCoroutine(FadeInOnStart(fadeColor));
     }
 
@@ -81,6 +105,7 @@ public class GameManager : MonoBehaviour
             if (fadePanel == null)
             {
                 Debug.LogError("No FadePanel in Scene");
+                yield break;
             }
             fadeImage = fadePanel.gameObject.GetComponent<Image>();
         }

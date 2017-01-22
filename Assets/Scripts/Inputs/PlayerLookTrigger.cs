@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tobii.EyeTracking;
 
 public class PlayerLookTrigger : MonoBehaviour {
 
@@ -13,6 +14,7 @@ public class PlayerLookTrigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         Ray ray = _camera.ViewportPointToRay( new Vector3( 0.5f, 0.5f, 0 ) );
         RaycastHit hit;
 
