@@ -62,8 +62,8 @@ public class GameManager : MonoBehaviour
 
     private void LevelComplete(object[] args)
     {
-        _currentLevel = "" + (int)args[0];
-        if ((int)args[0] == 3)
+        _currentLevel = "level_" + (int)args[0];
+        if ((int)args[0] == 6)
         {
             PlayerPrefs.SetInt("game_ended", 1);
             PlayerPrefs.Save();
@@ -71,7 +71,8 @@ public class GameManager : MonoBehaviour
         string key = "" + (int)args[0];
         PlayerPrefs.SetInt(key, 1);
         PlayerPrefs.Save();
-        StartCoroutine(FadeOutOnQuit(Color.black, "Menu"));
+        string toFade = "level_" + ((int)args[0] + 1);
+        StartCoroutine(FadeOutOnQuit(Color.black, _currentLevel));
     }
 
     private IEnumerator FadeOutOnQuit(Color fadeColor, string sceneOnComplete)
