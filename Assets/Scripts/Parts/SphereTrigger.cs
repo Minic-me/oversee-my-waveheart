@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SphereTrigger : MonoBehaviour {
+    public float Force { get; set; }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
+        Renderer rend = GetComponent<Renderer>();
 		
 	}
 	

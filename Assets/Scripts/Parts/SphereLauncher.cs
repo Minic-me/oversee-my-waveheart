@@ -19,6 +19,8 @@ public class SphereLauncher : MonoBehaviour {
 
     private AudioSource _audioSource;
 
+    public float sphereForce = 10f;
+
 	// Use this for initialization
 	void Start () {
         _audioSource = GetComponent<AudioSource>();
@@ -41,6 +43,7 @@ public class SphereLauncher : MonoBehaviour {
             GameObject sphere = Instantiate( sphereZone );
             sphere.transform.position = transform.position;
             sphere.transform.parent = transform;
+            sphere.GetComponent<SphereTrigger>().Force = sphereForce;
 
             iTween.ScaleTo(sphere, iTween.Hash(
                 "scale", scaleTo,
