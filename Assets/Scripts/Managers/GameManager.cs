@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     private CameraFade fadePanel;
     private Image fadeImage;
     private string _currentLevel;
+    private bool _gameEnded;
 
 	void Start ()
     {
@@ -23,6 +24,15 @@ public class GameManager : MonoBehaviour
         EventManager.Listen("restart_current", RestartLevel);
 
         SceneManager.LoadScene("Menu");
+
+        if(PlayerPrefs.GetInt("game_ended") == 1)
+        {
+            _gameEnded = true;
+        }
+        else
+        {
+            _gameEnded = false;
+        }
     }
 
     void OnDisable()
@@ -66,6 +76,7 @@ public class GameManager : MonoBehaviour
         if ((int)args[0] == 6)
         {
             PlayerPrefs.SetInt("game_ended", 1);
+            _gameEnded = true;
             PlayerPrefs.Save();
         }
         string key = "" + (int)args[0];
@@ -83,8 +94,15 @@ public class GameManager : MonoBehaviour
             if(fadePanel == null)
             {
                 Debug.LogError("No FadePanel in Scene");
+                SceneManager.LoadScene(sceneOnComplete);
+                yield return new WaitForEndOfFrame();
+                if (_gameEnded)
+                {
+                    EventManager.Send("game_ended");
+                }
+                StartCoroutine(FadeInOnStart(fadeColor));
+                yield break;
             }
-            fadeImage = fadePanel.gameObject.GetComponent<Image>();
         }
         float timer = 0;
         while (timer < fadeDuration)
@@ -95,6 +113,10 @@ public class GameManager : MonoBehaviour
         }
         SceneManager.LoadScene(sceneOnComplete);
         yield return new WaitForEndOfFrame();
+        if(_gameEnded)
+        {
+            EventManager.Send("game_ended");
+        }
         StartCoroutine(FadeInOnStart(fadeColor));
     }
 
