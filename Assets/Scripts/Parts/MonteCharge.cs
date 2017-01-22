@@ -21,19 +21,18 @@ public class MonteCharge : MonoBehaviour {
     public Vector3 cableMin;
 
 	// Use this for initialization
-	void Start () {
-        ChangeState(100f);		
+	void Start () {		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        plateforme.position = new Vector3(
+        plateforme.localPosition = new Vector3(
             (plateformeMax.x - plateformeMin.x) * ( state / 100 ) + plateformeMin.x,
             (plateformeMax.y - plateformeMin.y) * ( state / 100 ) + plateformeMin.y,
             (plateformeMax.z - plateformeMin.z) * ( state / 100 ) + plateformeMin.z
         );
 
-        poids.position = new Vector3(
+        poids.localPosition = new Vector3(
             ( poidsMax.x - poidsMin.x ) * ( state / 100 ) + poidsMin.x,
             ( poidsMax.y - poidsMin.y ) * ( state / 100 ) + poidsMin.y,
             ( poidsMax.z - poidsMin.z ) * ( state / 100 ) + poidsMin.z
