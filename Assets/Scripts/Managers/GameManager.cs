@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
         _currentLevel = "";
         DontDestroyOnLoad(this.gameObject); 
         EventManager.Listen("level_complete", LevelComplete);
+        EventManager.Listen("die_player", DiePlayer);
         EventManager.Listen("in_tampon", RestartScene);
         EventManager.Listen("play_menu_button", Play);
         EventManager.Listen("back_to_menu", BackToMenu);
@@ -38,36 +39,43 @@ public class GameManager : MonoBehaviour
     void OnDisable()
     {
         EventManager.Remove("level_complete", LevelComplete);
+        EventManager.Remove("die_player", DiePlayer);
         EventManager.Remove("in_tampon", RestartScene);
         EventManager.Remove("play_menu_button", Play);
         EventManager.Remove("back_to_menu", BackToMenu);
         EventManager.Remove("restart_current", RestartLevel);
     }
 
+    private void DiePlayer(object[] args)
+    {
+        StopAllCoroutines();
+        StartCoroutine(FadeOutOnQuit(Color.black, "TamponRestart", 0.5f));
+    }
+
     private void RestartLevel(object[] args)
     {
         StopAllCoroutines();
-        StartCoroutine(FadeOutOnQuit(Color.black, "TamponRestart"));
+        StartCoroutine(FadeOutOnQuit(Color.black, "TamponRestart", fadeDuration));
     }
 
     private void RestartScene(object[] args)
     {
         Debug.Log("restart");   
         StopAllCoroutines();
-        StartCoroutine(FadeOutOnQuit(Color.black, _currentLevel));
+        StartCoroutine(FadeOutOnQuit(Color.black, _currentLevel, fadeDuration));
     }
 
     private void Play(object[] args)
     {
         _currentLevel = (string)args[0];
         StopAllCoroutines();
-        StartCoroutine(FadeOutOnQuit(Color.white, (string)args[0]));
+        StartCoroutine(FadeOutOnQuit(Color.white, (string)args[0], fadeDuration));
     }
 
     private void BackToMenu(object[] args)
     {
         StopAllCoroutines();
-        StartCoroutine(FadeOutOnQuit(Color.black, "Menu"));
+        StartCoroutine(FadeOutOnQuit(Color.black, "Menu", fadeDuration));
     }
 
     private void LevelComplete(object[] args)
@@ -83,10 +91,10 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt(key, 1);
         PlayerPrefs.Save();
         string toFade = "level_" + ((int)args[0] + 1);
-        StartCoroutine(FadeOutOnQuit(Color.black, toFade));
+        StartCoroutine(FadeOutOnQuit(Color.black, toFade, fadeDuration));
     }
 
-    private IEnumerator FadeOutOnQuit(Color fadeColor, string sceneOnComplete)
+    private IEnumerator FadeOutOnQuit(Color fadeColor, string sceneOnComplete, float duration)
     {
         if (fadePanel == null)
         {
@@ -100,14 +108,14 @@ public class GameManager : MonoBehaviour
                 {
                     EventManager.Send("game_ended");
                 }
-                StartCoroutine(FadeInOnStart(fadeColor));
+                StartCoroutine(FadeInOnStart(fadeColor, duration));
                 yield break;
             }
         }
         float timer = 0;
-        while (timer < fadeDuration)
+        while (timer < duration)
         {
-            fadeImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, timer / fadeDuration);
+            fadeImage.color = new Color(fadeColor.r, fadeColor.g, fadeColor.b, timer / duration);
             timer += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -117,10 +125,10 @@ public class GameManager : MonoBehaviour
         {
             EventManager.Send("game_ended");
         }
-        StartCoroutine(FadeInOnStart(fadeColor));
+        StartCoroutine(FadeInOnStart(fadeColor, duration));
     }
 
-    private IEnumerator FadeInOnStart(Color fadeColor)
+    private IEnumerator FadeInOnStart(Color fadeColor, float duration)
     {
         if(fadePanel == null)
         {
