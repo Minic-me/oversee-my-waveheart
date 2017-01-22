@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using System;
 
 public class MenuManager : MonoBehaviour
 {
@@ -11,13 +12,28 @@ public class MenuManager : MonoBehaviour
     [SerializeField] private GameObject credits;
     [SerializeField] private GameObject fadePanel;
 
+    private bool _gameEnded;
+
     private int _numberLevelSelected;
 
     void Start()
     {
+        EventManager.Listen("game_ended", GameEnded);
+        _gameEnded = false;
         _numberLevelSelected = -1;
         HideAll();
         startMenu.SetActive(true);
+        _gameEnded = true;
+    }
+
+    void OnDisable()
+    {
+        EventManager.Remove("game_ended", GameEnded);
+    }
+
+    private void GameEnded(object[] args)
+    {
+        _gameEnded = true;
     }
 
     private void HideAll()
@@ -30,7 +46,7 @@ public class MenuManager : MonoBehaviour
 
     public void PlayButtonStartMenu()
     {
-        if (PlayerPrefs.GetInt("game_ended") == 1)
+        if (_gameEnded)
         {
             HideAll();
             selectionLevelMenu.SetActive(true);
@@ -54,5 +70,31 @@ public class MenuManager : MonoBehaviour
     public void QuitButtonStartMenu()
     {
         Application.Quit();
+    }
+
+    public void Level1ButtonSelectionMenu()
+    {
+        _numberLevelSelected = 1;
+        EventManager.Send("play_menu_button", "level_" + _numberLevelSelected);
+    }
+    public void Level2ButtonSelectionMenu()
+    {
+        _numberLevelSelected = 2;
+        EventManager.Send("play_menu_button", "level_" + _numberLevelSelected);
+    }
+    public void Level3ButtonSelectionMenu()
+    {
+        _numberLevelSelected = 3;
+        EventManager.Send("play_menu_button", "level_" + _numberLevelSelected);
+    }
+    public void Level4ButtonSelectionMenu()
+    {
+        _numberLevelSelected = 4;
+        EventManager.Send("play_menu_button", "level_" + _numberLevelSelected);
+    }
+    public void Level5ButtonSelectionMenu()
+    {
+        _numberLevelSelected = 5;
+        EventManager.Send("play_menu_button", "level_" + _numberLevelSelected);
     }
 }
