@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetInt(key, 1);
         PlayerPrefs.Save();
         string toFade = "level_" + ((int)args[0] + 1);
-        StartCoroutine(FadeOutOnQuit(Color.black, _currentLevel));
+        StartCoroutine(FadeOutOnQuit(Color.black, toFade));
     }
 
     private IEnumerator FadeOutOnQuit(Color fadeColor, string sceneOnComplete)
