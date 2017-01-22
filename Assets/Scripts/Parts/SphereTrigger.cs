@@ -6,9 +6,7 @@ public class SphereTrigger : MonoBehaviour {
     public float Force { get; set; }
 
     // Use this for initialization
-    void Start () {
-        Renderer rend = GetComponent<Renderer>();
-		
+    void Start () {		
 	}
 	
 	// Update is called once per frame
