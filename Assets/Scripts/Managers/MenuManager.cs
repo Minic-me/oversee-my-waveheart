@@ -23,7 +23,6 @@ public class MenuManager : MonoBehaviour
         _numberLevelSelected = -1;
         HideAll();
         startMenu.SetActive(true);
-        _gameEnded = true;
     }
 
     void OnDisable()
