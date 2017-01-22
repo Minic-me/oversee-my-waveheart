@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     private void LevelComplete(object[] args)
     {
         _currentLevel = "level_" + (int)args[0];
-        if ((int)args[0] == 6)
+        if ((int)args[0] == 5)
         {
             PlayerPrefs.SetInt("game_ended", 1);
             PlayerPrefs.Save();

@@ -38,7 +38,7 @@ public class MenuManager : MonoBehaviour
         else
         {
             fadePanel.SetActive(true);
-            EventManager.Send("play_menu_button", "level_1");
+            EventManager.Send("play_menu_button", "level_2");
         }
     }
     public void CreditsButtonStartMenu()
